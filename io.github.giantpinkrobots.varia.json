@@ -51,15 +51,11 @@
 				"--disable-bittorrent",
 				"--disable-ftp"
 			],
-			"no-make-install": true,
-			"post-install": [
-				"install -Dm755 src/aria2c -t /app/aria2/"
-			],
 			"sources" : [
 				{
 					"type" : "archive",
-					"url" : "https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.xz",
-					"sha256" : "1e2b7fd08d6af228856e51c07173cfcf987528f1ac97e04c5af4a47642617dfd"
+					"url" : "https://github.com/aria2/aria2/releases/download/release-1.37.0/aria2-1.37.0.tar.xz",
+					"sha256" : "60a420ad7085eb616cb6e2bdf0a7206d68ff3d37fb5a956dc44242eb2f79b66b"
 				}
 			]
 		},
@@ -71,7 +67,7 @@
 				{
 					"type" : "git",
 					"url" : "https://github.com/giantpinkrobots/varia.git",
-					"commit" : "95347f569e44369ad43ac0a0e49b4cac97117cf2"
+					"commit" : "f665dd007092393fdc696ef51063d974b5bda743"
 				}
 			]
 		}
