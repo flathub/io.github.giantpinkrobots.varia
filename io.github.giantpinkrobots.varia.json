@@ -31,7 +31,6 @@
 			"buildsystem" : "autotools",
 			"config-opts": [
 				"--without-libxml2",
-				"--without-libexpat",
 				"--without-sqlite3",
 				"--without-appletls",
 				"--without-gnutls",
@@ -42,13 +41,10 @@
 				"--without-cppunit",
 				"--without-libz",
 				"--without-libcunit",
-				"--without-libssl",
-				"--without-libuv",
 				"--without-libcares",
 				"--without-libaria2",
 				"--disable-nls",
 				"--with-openssl",
-				"--disable-bittorrent",
 				"--disable-ftp"
 			],
 			"sources" : [
@@ -67,7 +63,7 @@
 				{
 					"type" : "git",
 					"url" : "https://github.com/giantpinkrobots/varia.git",
-					"commit" : "0b06ca27c5b86628818ace2aab9aee7661ac3731"
+					"commit" : "29cc35dd6e5eb8570a6564f73efe51bc7e723268"
 				}
 			]
 		}
