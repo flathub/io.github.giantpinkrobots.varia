@@ -27,6 +27,7 @@
     ],
     "modules" : [
         "./python3-aria2p.json",
+        "./python3-yt-dlp.json",
         {
             "name" : "aria2",
             "buildsystem" : "autotools",
@@ -57,6 +58,31 @@
             ]
         },
         {
+            "name": "ffmpeg",
+            "config-opts": [
+                "--disable-debug",
+                "--disable-devices",
+                "--disable-doc",
+                "--disable-ffplay",
+                "--disable-static",
+                "--enable-gnutls",
+                "--enable-libmp3lame",
+                "--enable-libopus",
+                "--enable-libvorbis",
+                "--enable-shared"
+            ],
+            "cleanup": [
+                "/share/ffmpeg"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz",
+                    "sha256": "40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6"
+                }
+            ]
+        },
+        {
             "name" : "varia",
             "builddir" : true,
             "buildsystem" : "meson",
@@ -64,7 +90,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/giantpinkrobots/varia.git",
-                    "commit" : "96a76c6a5a1ffde5eb82387a2a36aa5fe680615d"
+                    "commit" : "b8289c6efea8c2a807d24813556074e397255c2c"
                 }
             ]
         }
