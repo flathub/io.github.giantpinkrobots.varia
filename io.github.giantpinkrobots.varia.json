@@ -28,6 +28,7 @@
     "modules" : [
         "./python3-aria2p.json",
         "./python3-yt-dlp.json",
+        "./python3-dbus-next.json",
         {
             "name" : "aria2",
             "buildsystem" : "autotools",
@@ -90,7 +91,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/giantpinkrobots/varia.git",
-                    "commit" : "d5766d6d412c08cd5a4501f59530c846abfeebc9"
+                    "commit" : "b271812727449269396a1b321cb6258ba872748e"
                 }
             ],
             "config-opts" : [
