@@ -96,7 +96,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/giantpinkrobots/varia.git",
-                    "commit" : "13a8f9aa6348e0386e1e5f9c15ba3c22830227d1"
+                    "commit" : "396cc6224f80aa972f9288fb4caae1a2f2eb631e"
                 }
             ],
             "config-opts" : [
