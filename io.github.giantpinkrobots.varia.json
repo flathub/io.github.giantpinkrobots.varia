@@ -14,9 +14,23 @@
         "--socket=wayland",
         "--filesystem=xdg-download",
         "--system-talk-name=org.freedesktop.login1",
-        "--talk-name=org.kde.StatusNotifierWatcher",
-        "--own-name=io.github.giantpinkrobots.varia-tray"
+        "--talk-name=org.kde.StatusNotifierWatcher"
     ],
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.rust-stable",
+        "org.freedesktop.Sdk.Extension.llvm21"
+    ],
+    "build-options" : {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm21/bin",
+        "build-args" : [
+            "--share=network"
+        ],
+        "env" : {
+            "CARGO_HOME" : "/run/build/rust-flatpak/cargo",
+            "CC": "clang",
+            "CXX": "clang++"
+        }
+    },
     "cleanup" : [
         "/include",
         "/lib/pkgconfig",
@@ -83,10 +97,43 @@
                 }
             ]
         },
-        "./python3-aria2p.json",
-        "./python3-yt-dlp.json",
-        "./python3-dbus-next.json",
-        "./python3-emoji-country-flag.json",
+        {
+            "name" : "7-zip",
+            "buildsystem" : "simple",
+            "build-commands" :
+            [
+                "for bundle in Alone2 SFXCon; do pushd CPP/7zip/Bundles/${bundle}; make -j ${FLATPAK_BUILDER_N_JOBS} -f ../../cmpl_gcc.mak; popd; done",
+                "install -Dm755 CPP/7zip/Bundles/Alone2/b/g/7zz   $FLATPAK_DEST/bin/7zz"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/ip7z/7zip.git",
+                    "tag" : "25.01",
+                    "commit" : "5e96a8279489832924056b1fa82f29d5837c9469"
+                }
+            ]
+        },
+        {
+            "name": "deno",
+            "buildsystem": "simple",
+            "build-commands": [
+                "cargo fetch --locked --manifest-path Cargo.toml",
+                "cargo build --release",
+                "install -Dm755 ./target/release/deno -t /app/bin/"
+            ],
+            "sources": [
+                {
+                "type": "archive",
+                "url": "https://github.com/denoland/deno/archive/refs/tags/v2.6.3.tar.gz",
+                "sha256": "3920c3c8ecfe7157a9d2f168fc9d825d1a0791d1fd9710139dc3d1e5050bdb27"
+                }
+            ]
+        },
+        "./flatpak_extra_manifests/python3-aria2p.json",
+        "./flatpak_extra_manifests/python3-yt-dlp.json",
+        "./flatpak_extra_manifests/python3-emoji-country-flag.json",
+        "shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json",
         {
             "name" : "varia",
             "builddir" : true,
@@ -95,15 +142,12 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/giantpinkrobots/varia.git",
-                    "commit" : "1087a53f992daf8dacfac27dc2fb24baf9f4ad40"
+                    "commit" : "1b7876a8fd443427ad039dce7988336f6ad3ae73"
                 }
             ],
             "config-opts" : [
                 "--libdir=lib"
             ]
         }
-    ],
-    "build-options" : {
-        "env" : {        }
-    }
+    ]
 }
