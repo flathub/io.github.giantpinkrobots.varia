@@ -14,9 +14,14 @@
         "--socket=wayland",
         "--filesystem=xdg-download",
         "--system-talk-name=org.freedesktop.login1",
-        "--talk-name=org.kde.StatusNotifierWatcher",
-        "--own-name=io.github.giantpinkrobots.varia-tray"
+        "--talk-name=org.kde.StatusNotifierWatcher"
     ],
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.llvm21"
+    ],
+    "build-options" : {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm21/bin"
+    },
     "cleanup" : [
         "/include",
         "/lib/pkgconfig",
@@ -83,10 +88,49 @@
                 }
             ]
         },
-        "./python3-aria2p.json",
-        "./python3-yt-dlp.json",
-        "./python3-dbus-next.json",
-        "./python3-emoji-country-flag.json",
+        {
+            "name" : "7-zip",
+            "buildsystem" : "simple",
+            "build-commands" :
+            [
+                "for bundle in Alone2 SFXCon; do pushd CPP/7zip/Bundles/${bundle}; make -j ${FLATPAK_BUILDER_N_JOBS} -f ../../cmpl_gcc.mak; popd; done",
+                "install -Dm755 CPP/7zip/Bundles/Alone2/b/g/7zz   $FLATPAK_DEST/bin/7zz"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/ip7z/7zip.git",
+                    "tag" : "25.01",
+                    "commit" : "5e96a8279489832924056b1fa82f29d5837c9469"
+                }
+            ]
+        },
+        {
+            "name": "deno",
+            "buildsystem": "simple",
+            "build-commands": [
+            	"unzip ./deno*",
+                "install -Dm755 deno /app/bin/"
+            ],
+            "sources": [
+            {
+                "type": "file",
+                "only-arches": ["x86_64"],
+                "url": "https://github.com/denoland/deno/releases/download/v2.6.4/deno-x86_64-unknown-linux-gnu.zip",
+                "sha256": "9100bbd0450c17b82002d3948bb8e7e1953c9e6506e63b586e2daa4042eca7f6"
+            },
+            {
+                "type": "file",
+                "only-arches": ["aarch64"],
+                "url": "https://github.com/denoland/deno/releases/download/v2.6.4/deno-aarch64-unknown-linux-gnu.zip",
+                "sha256": "dafb54c5454d7fcca81305215442e832e0c34e90b76a2e9a31d0676cbb06bfc6"
+            }
+            ]
+        },
+        "./flatpak_extra_manifests/python3-aria2p.json",
+        "./flatpak_extra_manifests/python3-yt-dlp.json",
+        "./flatpak_extra_manifests/python3-emoji-country-flag.json",
+        "shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json",
         {
             "name" : "varia",
             "builddir" : true,
@@ -95,15 +139,12 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/giantpinkrobots/varia.git",
-                    "commit" : "1087a53f992daf8dacfac27dc2fb24baf9f4ad40"
+                    "commit" : "cd89556c1f95ccd8c660b27ae407b08354ae13ce"
                 }
             ],
             "config-opts" : [
                 "--libdir=lib"
             ]
         }
-    ],
-    "build-options" : {
-        "env" : {        }
-    }
+    ]
 }
