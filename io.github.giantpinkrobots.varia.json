@@ -5,7 +5,7 @@
     "//!": "!!!!!!Also update the GNOME version in ./.github/workflows/flatpak-package.yml",
     "sdk": "org.gnome.Sdk",
     "command": "varia",
-    "//": "Justifications for the permissions: This program utilizes aria2c, and aria2c requires the networking permission and the xdg-download directory in order to download files. It also has a 'shut down once all downloads are completed' feature that requires access to org.freedesktop.login1.",
+    "//": "Justifications for the permissions: This program utilizes aria2c, and aria2c requires the networking permission and the xdg-download directory in order to download files. It also has a 'shut down once all downloads are completed' feature that requires access to org.freedesktop.login1. Access to the GTK4 theme directory is required for a secret easter-egg function allowing for the usage of the Plasma color scheme.",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -83,8 +83,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://ffmpeg.org/releases/ffmpeg-8.1.tar.xz",
-                    "sha256": "b072aed6871998cce9b36e7774033105ca29e33632be5b6347f3206898e0756a"
+                    "url": "https://github.com/FFmpeg/FFmpeg/archive/refs/tags/n9.0.tar.gz",
+                    "sha256": "d97647ace36a307f17ba2bca052d68937487bed8682e1eb9b6737076a9c442b7"
                 }
             ]
         },
@@ -97,10 +97,9 @@
             ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://github.com/ip7z/7zip.git",
-                    "tag": "26.00",
-                    "commit": "839151eaaad24771892afaae6bac690e31e58384"
+                    "type": "archive",
+                    "url": "https://github.com/ip7z/7zip/archive/refs/tags/26.02.zip",
+                    "sha256": "c7d1954793bcb3fa4367ce808181e3abb070659178d4b65c0094731631e49384"
                 }
             ]
         },
@@ -117,24 +116,80 @@
                     "only-arches": [
                         "x86_64"
                     ],
-                    "url": "https://github.com/denoland/deno/releases/download/v2.6.4/deno-x86_64-unknown-linux-gnu.zip",
-                    "sha256": "9100bbd0450c17b82002d3948bb8e7e1953c9e6506e63b586e2daa4042eca7f6"
+                    "url": "https://github.com/denoland/deno/releases/download/v2.9.4/deno-x86_64-unknown-linux-gnu.zip",
+                    "sha256": "c24f955d9fbfe0ea5ae2b501c8e71ae76e31e4c9782390a54a284b3364fda725"
                 },
                 {
                     "type": "file",
                     "only-arches": [
                         "aarch64"
                     ],
-                    "url": "https://github.com/denoland/deno/releases/download/v2.6.4/deno-aarch64-unknown-linux-gnu.zip",
-                    "sha256": "dafb54c5454d7fcca81305215442e832e0c34e90b76a2e9a31d0676cbb06bfc6"
+                    "url": "https://github.com/denoland/deno/releases/download/v2.9.4/deno-aarch64-unknown-linux-gnu.zip",
+                    "sha256": "111da5c05c240cfdc4340f234a0e3539d39dbcb6755221f19dcd60bacc8be5aa"
                 }
             ]
         },
         "./flatpak_extra_manifests/python3-aria2p.json",
-        "./flatpak_extra_manifests/python3-yt-dlp.json",
         "./flatpak_extra_manifests/python3-emoji-country-flag.json",
         "./flatpak_extra_manifests/python3-dbus-next.json",
-        "shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json",
+        "./shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json",
+        "./flatpak_extra_manifests/python3-yt-dlp.json",
+        {
+            "name": "boost",
+            "buildsystem": "simple",
+            "build-commands": [
+                "./bootstrap.sh --prefix=/app",
+                "./b2 install --with-headers cxxflags='$CXXFLAGS' linkflags='$LDFLAGS' -j $FLATPAK_BUILDER_N_JOBS"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/boostorg/boost/releases/download/boost-1.90.0/boost-1.90.0-b2-nodocs.tar.xz",
+                    "sha256": "9e6bee9ab529fb2b0733049692d57d10a72202af085e553539a05b4204211a6f"
+                }
+            ]
+        },
+        {
+            "name": "libtorrent",
+            "buildsystem": "cmake-ninja",
+            "builddir": true,
+            "config-opts": [
+                "-DBUILD_SHARED_LIBS=OFF",
+                "-DCMAKE_BUILD_TYPE=Release"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/arvidn/libtorrent.git",
+                    "commit": "578e06824c3546f3371ab43967ab288a7e253eca"
+                }
+            ]
+        },
+        {
+            "name": "python-libtorrent",
+            "buildsystem": "simple",
+            "build-commands": [
+                "pip3 install --no-deps --prefix=/app *.whl"
+            ],
+            "sources": [
+                {
+                    "type": "file",
+                    "only-arches": [
+                        "x86_64"
+                    ],
+                    "url": "https://github.com/arvidn/libtorrent/releases/download/v2.1.0/libtorrent-2.1.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                    "sha256": "1c44c20e87fc1d3000b7e149da5668192caf4a70a106d61bc60940b990de3faa"
+                },
+                {
+                    "type": "file",
+                    "only-arches": [
+                        "aarch64"
+                    ],
+                    "url": "https://github.com/arvidn/libtorrent/releases/download/v2.1.0/libtorrent-2.1.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                    "sha256": "1b64f6ce69874666a795f0161727be0ac5096bf626768574f1f298f8daa886bc"
+                }
+            ]
+        },
         {
             "name" : "varia",
             "builddir" : true,
@@ -143,7 +198,7 @@
                 {
                     "type" : "git",
                     "url" : "https://github.com/giantpinkrobots/varia.git",
-                    "commit" : "79a5949d7c5d48b4233860d5063f09902ea676f8"
+                    "commit" : "897b077cc1783e787d344293206a1d5d5f2bf016"
                 }
             ],
             "config-opts" : [
